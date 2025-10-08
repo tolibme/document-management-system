@@ -7,10 +7,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3003:3003"
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=3003
       # Add your environment variables here
       # - DATABASE_URL=${DATABASE_URL}
       # - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
