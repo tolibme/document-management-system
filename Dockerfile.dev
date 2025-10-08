@@ -1,0 +1,22 @@
+# Development Dockerfile
+FROM node:18-alpine
+
+# Install dependencies needed for some packages
+RUN apk add --no-cache libc6-compat
+
+WORKDIR /app
+
+# Install dependencies
+COPY package.json pnpm-lock.yaml* ./
+RUN corepack enable pnpm && pnpm install
+
+# Copy source code
+COPY . .
+
+EXPOSE 3000
+
+ENV PORT 3000
+ENV NODE_ENV development
+
+# Start the development server
+CMD ["npm", "run", "dev"]

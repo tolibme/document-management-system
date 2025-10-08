@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Next.js application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Add your environment variables here
+      # - DATABASE_URL=${DATABASE_URL}
+      # - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      # - NEXTAUTH_URL=${NEXTAUTH_URL}
+    restart: unless-stopped
+    # Uncomment if you need to connect to a database
+    # depends_on:
+    #   - db
+
+  # Development service (alternative to the production build)
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    command: npm run dev
+    profiles:
+      - development
+
+  # Optional: Add a database service
+  # Uncomment and configure as needed
+  # db:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     - POSTGRES_DB=document_management
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+  # Optional: Add Redis for caching/sessions
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   restart: unless-stopped
+
+# volumes:
+#   postgres_data:
